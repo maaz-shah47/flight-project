@@ -1,33 +1,40 @@
-import { Box, Container, CssBaseline, Typography } from "@mui/material";
+import { Container, CssBaseline, Typography } from "@mui/material";
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
 import Flights from "../flights/Flight";
 import Seats from "../seats/Seats";
+import Settings from "../settings/Settings";
 
 const styles = {
-  root: {
+  main: {
     display: 'flex',
+    width: '100%',
+    height: '100%',
+    backgroundColor: "yellow !important"
   },
   content: {
     flexGrow: 1,
-    padding: '80px 0px 0px 90px',
+    position: 'absolute',
+    left: '22%',
+    top: '17%',
   },
 };
 
 
 export const Dashboard = () => {
   return (
-    <Box>
-      <CssBaseline />
-      <Navbar />
-      <Sidebar />
-
+    <Container style={styles.main}>
+      <Container>
+        <CssBaseline />
+        <Navbar />
+        <Sidebar />
+      </Container>
       <Container style={styles.content}>
         {location.pathname === "/dashboard/flights" && <Flights />}
         {location.pathname === "/dashboard/seats" && <Seats />}
         {location.pathname === "/dashboard/messages" && <Typography variant="h3">Messages</Typography>}
-        {location.pathname === "/dashboard/settings" && <Typography variant="h3">Settings</Typography>}
+        {location.pathname === "/dashboard/settings" && <Settings />}
       </Container>
-    </Box>
+    </Container>
   );
 }

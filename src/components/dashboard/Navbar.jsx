@@ -55,9 +55,10 @@ const Navbar = () => {
               <Box sx={{
                 marginRight: "15px"
               }}>
-                <img src={UserIcon} alt="user icon" height="45px" width="45px"
+                <img src={UserIcon} alt="user icon" height="42px" width="42px"
                   style={{
                     borderRadius: "50%",
+                    marginTop: "7px"
                   }} />
               </Box>
               <Box sx={{
