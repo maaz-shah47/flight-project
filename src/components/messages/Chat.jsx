@@ -58,7 +58,6 @@ const messages = [
     time: '12:00 PM',
   },
 ];
-
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
