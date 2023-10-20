@@ -64,14 +64,10 @@ import { navItems } from './NavItemsData';
 const Sidebar = ({ isOpen }) => {
   return (
     <Box sx={{
-      width: 200,
+      widht: '100% !important',
       backgroundColor: 'black',
       color: 'white',
       height: '100vh',
-      position: 'fixed',
-      top: 0,
-      left: isOpen ? 0 : -120,
-      transition: 'left 0.3s ease',
     }}>
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', p: 2 }}>
         <img src={Logo} alt="Logo" style={{ height: '50px', width: '50px' }} />

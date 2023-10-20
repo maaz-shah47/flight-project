@@ -20,18 +20,18 @@ const Dashboard = () => {
     <Grid container sx={{
       backgroundColor: '#f5f5f5',
     }}>
-      <Grid item md={2}>
+      <Grid item sm={2}>
         <Sidebar isOpen={isOpen} />
       </Grid>
-      <Grid item md={10} sx={{
-        maxHeight: '98vh',
+      <Grid item sm={10} sx={{
+        height: '100vh',
       }}>
         <Navbar handleMenuClick={handleMenuClick} />
         <Box sx={{
           display: 'flex',
           flexDirection: 'column',
           gap: '30px',
-          padding: '70px 0 70px 0',
+          padding: '30px',
         }}>
           {location.pathname === '/dashboard/flights' && <Flights />}
           {location.pathname === '/dashboard/seats' && <Seats />}
