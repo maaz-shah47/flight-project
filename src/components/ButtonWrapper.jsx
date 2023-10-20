@@ -1,14 +1,15 @@
 import { Button } from "@mui/material";
 
-const SettingsButton = ({ onClick, text }) => (
+const ButtonWrapper = ({ onClick, text, borderRadius }) => (
   <Button variant="contained" onClick={onClick}
     sx={{
       backgroundColor: 'black',
       color: 'white',
       width: '120px',
-      fontSize: '11px'
+      fontSize: '11px',
+      borderRadius: borderRadius ? borderRadius : '0px',
     }}
   > {text}</Button>
 );
 
-export default SettingsButton;
+export default ButtonWrapper;

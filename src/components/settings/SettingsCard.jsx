@@ -4,7 +4,7 @@ const SettingsCard = ({ title, content }) => {
   return (
     <Card style={{
       height: "75px",
-      backgroundColor: 'white',
+      backgroundColor: '#f5f5f5',
       width: '250px',
     }}>
       <CardContent>
