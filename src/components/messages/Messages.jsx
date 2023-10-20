@@ -49,9 +49,9 @@ const Messages = () => {
         <Grid container mt={2}>
           <Grid item md={3}>
             <CardWrapper customStyles={{
-              height: '470px',
               overflowY: 'scroll',
               overflowX: 'hidden',
+              height: '380px',
               padding: '20px',
             }}>
               <Box sx={{
@@ -78,8 +78,8 @@ const Messages = () => {
             padding: '0 20px 0 20px',
           }}>
             <CardWrapper customStyles={{
-              height: '470px',
               width: '100% important',
+              height: '380px',
               padding: '20px',
             }}>
               <Chat />

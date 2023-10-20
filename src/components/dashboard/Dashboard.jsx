@@ -23,15 +23,12 @@ const Dashboard = () => {
       <Grid item sm={2}>
         <Sidebar isOpen={isOpen} />
       </Grid>
-      <Grid item sm={10} sx={{
-        height: '100vh',
-      }}>
+      <Grid item sm={10}>
         <Navbar handleMenuClick={handleMenuClick} />
         <Box sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '30px',
           padding: '30px',
+          overflow: 'hidden !important',
+          overflowY: 'scroll !important',
         }}>
           {location.pathname === '/dashboard/flights' && <Flights />}
           {location.pathname === '/dashboard/seats' && <Seats />}

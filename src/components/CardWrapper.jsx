@@ -4,10 +4,9 @@ const styles = {
   cardWrapper: {
     display: 'flex',
     flexDirection: 'column',
-    height: '100%',
-    maxWidth: '95%',
+    maxWidth: '100%',
+    padding: '15px',
     backgroundColor: 'white',
-    padding: '20px'
   }
 }
 
