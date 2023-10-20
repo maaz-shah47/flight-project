@@ -8,22 +8,22 @@ function createNav(icon, text, path) {
 }
 let navItems = [
   createNav(
-    <FlightTakeoffIcon sx={{ fontSize: "25px", color: "white" }} />,
+    <FlightTakeoffIcon sx={{ fontSize: "30px", color: "white" }} />,
     "Flight Schedule",
     "/dashboard/flights"
   ),
   createNav(
-    <img src={SeatIcon} alt="Seat Icon" style={{ height: '22px' }} />,
+    <img src={SeatIcon} alt="Seat Icon" style={{ height: '30px' }} />,
     "Seat Availablity",
     "/dashboard/seats"
   ),
   createNav(
-    <ChatBubbleOutlineIcon sx={{ fontSize: "25px", color: "white" }} />,
+    <ChatBubbleOutlineIcon sx={{ fontSize: "30px", color: "white" }} />,
     "Messages",
     "/dashboard/messages"
   ),
   createNav(
-    <SettingsIcon sx={{ fontSize: "25px", color: "white" }} />,
+    <SettingsIcon sx={{ fontSize: "30px", color: "white" }} />,
     "Settings",
     "/dashboard/settings"
   ),

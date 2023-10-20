@@ -20,10 +20,10 @@ const Dashboard = () => {
     <Grid container sx={{
       backgroundColor: '#f5f5f5',
     }}>
-      <Grid item sm={2}>
+      <Grid item sm={isOpen ? 2 : 1}>
         <Sidebar isOpen={isOpen} />
       </Grid>
-      <Grid item sm={10}>
+      <Grid item sm={isOpen ? 10 : 11}>
         <Navbar handleMenuClick={handleMenuClick} />
         <Box sx={{
           padding: '30px',

@@ -74,7 +74,7 @@ const Sidebar = ({ isOpen }) => {
       </Box>
       <Divider />
       <List sx={{
-        padding: '15px'
+        padding: isOpen ? '15px' : '30px'
       }}>
         {navItems.map((item) => (
           <ListItem disablePadding key={item.text}>
