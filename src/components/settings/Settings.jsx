@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
-import CardWrapper from "./CardWrapper";
+import CardWrapper from "../CardWrapper";
 import SettingsCard from "./SettingsCard";
-import SettingsButton from "./SettingsButton";
+import ButtonWrapper from "../ButtonWrapper";
 
 const Settings = () => {
   return (
@@ -23,7 +23,7 @@ const Settings = () => {
         }}>
           <SettingsCard title="Unsuccessful Login Attempts" content="5 Per Hour" />
           <SettingsCard title="Unsuccessful Login Lock-out period" content="5 Per Hour" />
-          <SettingsButton text="Edit" />
+          <ButtonWrapper text="Edit" />
         </Box>
       </CardWrapper>
       <CardWrapper>
@@ -37,7 +37,7 @@ const Settings = () => {
           <SettingsCard title="Password Length" content="8" />
           <SettingsCard title="Number of unique password required" content="7" />
           <SettingsCard title="Acceptable range of characters" content="Uppercase, Lowercase, Number" />
-          <SettingsButton text="Edit" />
+          <ButtonWrapper text="Edit" />
         </Box>
       </CardWrapper>
       <CardWrapper>
@@ -49,7 +49,7 @@ const Settings = () => {
           mt: 2,
         }}>
           <SettingsCard title="Setup / Edit Bank Account" content="*** *** *** 43521" />
-          <SettingsButton text="Edit" />
+          <ButtonWrapper text="Edit" />
         </Box>
       </CardWrapper>
     </Box>
