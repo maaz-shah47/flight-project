@@ -1,40 +1,43 @@
-import { Container, CssBaseline, Typography } from "@mui/material";
-import Navbar from "./Navbar";
-import Sidebar from "./Sidebar";
-import Flights from "../flights/Flight";
-import Seats from "../seats/Seats";
-import Settings from "../settings/Settings";
+import { Box, Grid } from '@mui/material';
+import Navbar from './Navbar';
+import Sidebar from './Sidebar';
+import Flights from '../flights/Flight';
+import Seats from '../seats/Seats';
+import Settings from '../settings/Settings';
+import { useLocation } from 'react-router-dom';
+import Messages from '../messages/Messages';
+import { useState } from 'react';
 
-const styles = {
-  main: {
-    display: 'flex',
-    width: '100%',
-    height: '100%',
-    backgroundColor: "yellow !important"
-  },
-  content: {
-    flexGrow: 1,
-    position: 'absolute',
-    left: '22%',
-    top: '17%',
-  },
+const Dashboard = () => {
+  const location = useLocation();
+  const [isOpen, setIsOpen] = useState(true);
+
+  const handleMenuClick = () => {
+    setIsOpen(!isOpen);
+  };
+
+  return (
+    <Grid container sx={{
+      backgroundColor: '#f5f5f5',
+    }}>
+      <Grid item sm={2}>
+        <Sidebar isOpen={isOpen} />
+      </Grid>
+      <Grid item sm={10}>
+        <Navbar handleMenuClick={handleMenuClick} />
+        <Box sx={{
+          padding: '30px',
+          overflow: 'hidden !important',
+          overflowY: 'scroll !important',
+        }}>
+          {location.pathname === '/dashboard/flights' && <Flights />}
+          {location.pathname === '/dashboard/seats' && <Seats />}
+          {location.pathname === '/dashboard/messages' && <Messages />}
+          {location.pathname === '/dashboard/settings' && <Settings />}
+        </Box>
+      </Grid>
+    </Grid >
+  );
 };
 
-
-export const Dashboard = () => {
-  return (
-    <Container style={styles.main}>
-      <Container>
-        <CssBaseline />
-        <Navbar />
-        <Sidebar />
-      </Container>
-      <Container style={styles.content}>
-        {location.pathname === "/dashboard/flights" && <Flights />}
-        {location.pathname === "/dashboard/seats" && <Seats />}
-        {location.pathname === "/dashboard/messages" && <Typography variant="h3">Messages</Typography>}
-        {location.pathname === "/dashboard/settings" && <Settings />}
-      </Container>
-    </Container>
-  );
-}
+export default Dashboard;
