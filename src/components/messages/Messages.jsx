@@ -80,7 +80,6 @@ const Messages = () => {
             <CardWrapper customStyles={{
               width: '100% important',
               height: '380px',
-              padding: '20px',
             }}>
               <Chat />
             </CardWrapper>

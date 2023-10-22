@@ -1,11 +1,8 @@
-import { makeStyles } from '@material-ui/core/styles';
-import { Divider, TextField, IconButton, Typography } from '@material-ui/core';
-import CallIcon from '@mui/icons-material/Call';
-import EmailIcon from '@mui/icons-material/Email';
-import SendIcon from '@mui/icons-material/Send';
+import { Divider, TextField } from '@material-ui/core';
 import { Box } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt';
+import styled from 'styled-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPhone, faEnvelope, faPlus, faFaceSmile, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 
 const messages = [
   {
@@ -58,40 +55,40 @@ const messages = [
     time: '12:00 PM',
   },
 ];
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100%',
-    width: '100%',
-  },
-  header: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  divider: {
-    margin: theme.spacing(2, 0),
-  },
-  messages: {
-    flex: '1 1 auto',
-    overflowY: 'auto',
-  },
-  footer: {
-    display: 'flex',
-    gap: '10px',
-    alignItems: 'center',
-    padding: theme.spacing(1, 3),
-    border: '1px solid #e0e0e0',
-  },
-  textField: {
-    flex: '1 1 auto',
-  },
-}));
+
+const MessageContainer = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  padding: 5px
+`;
+
+const HeaderContainer = styled(Box)`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 0 10px 5px 10px;
+`;
+
+const MessageSection = styled(Box)`
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 15px 10px 10px 10px;
+`;
+
+const Footer = styled(Box)`
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #e0e0e0;
+`;
+
 
 const Chat = () => {
-  const classes = useStyles();
-
   const message = {
     id: 1,
     name: 'John Doe',
@@ -101,135 +98,127 @@ const Chat = () => {
   }
 
   return (
-    <Box className={classes.root}>
-      <Box className={classes.header}>
+    <MessageContainer>
+      <HeaderContainer>
+        <Box>
+          <img src={message.profile} alt="" height='40px' width='40px' style={{
+            borderRadius: '50%',
+          }} />
+        </Box>
         <Box sx={{
           display: 'flex',
-          alignItems: 'center',
-          gap: '10px'
+          flex: 2,
+          flexDirection: 'column',
         }}>
+          <span>{message.name}</span>
           <Box>
-            <img src={message.profile} alt="" height='40px' width='40px' style={{
+            <div style={{
+              height: '6px',
+              width: '6px',
               borderRadius: '50%',
+              backgroundColor: 'blue',
+              display: 'inline-block',
+              marginRight: '5px'
             }} />
-          </Box>
-          <Box sx={{
-            display: 'flex',
-            flexDirection: 'column',
-          }}>
-            <Typography variant="subtitle2">
-              {message.name}</Typography>
-            <Box sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              gap: '6px'
-            }}>
-              <Typography style={{
-                fontSize: '10px'
-              }}>
-                <div style={{
-                  height: '6px',
-                  width: '6px',
-                  borderRadius: '50%',
-                  backgroundColor: 'blue',
-                  display: 'inline-block',
-                  marginRight: '5px'
-                }} />
-                Online</Typography>
-              <Typography style={{
-                fontSize: '10px'
-              }}>
-                {message.time}
-              </Typography>
-            </Box>
+            <span style={{
+              fontSize: '12px',
+              color: '#9e9e9e',
+              marginRight: '5px'
+            }}>Online</span>
+            <span style={{
+              fontSize: '12px',
+              color: '#9e9e9e',
+            }}>{message.time}</span>
           </Box>
         </Box>
-        <Box>
-          <IconButton>
-            <CallIcon />
-          </IconButton>
-          <IconButton>
-            <EmailIcon />
-          </IconButton>
-        </Box>
-      </Box>
-      <Divider className={classes.divider} />
-      <Box className={classes.messages}>
         <Box sx={{
-          flex: '1 1 auto',
-          overflowY: 'auto',
+          display: 'flex',
+          gap: '10px',
+          alignItems: 'center',
         }}>
-          {messages.map((message) => (
-            <Box
-              key={message.id}
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: message.name === 'John Doe' ? 'flex-start' : 'flex-end',
-                marginBottom: '20px',
-              }}
-            >
-              <Box sx={{
-                display: 'flex', alignItems: 'center', gap: '10px',
-                flexDirection: message.name === 'John Doe' ? 'row' : 'row-reverse'
-              }}>
-                <img src={message.profile} alt="" height="40px" width="40px" style={{ borderRadius: '50%' }} />
-                <Box sx={{
-                  backgroundColor: message.name === 'John Doe' ? '#f5f5f5' : 'black',
-                  color: message.name === 'John Doe' ? 'black' : 'white',
-                  padding: '10px',
-                  borderRadius: '50px',
-                }}>
-                  <Typography style={{
-                    fontSize: '12px'
-                  }}>{message.message}</Typography>
-                </Box>
-                <Typography variant="caption" sx={{ mt: '5px', color: 'gray' }}>
-                  {message.time}
-                </Typography>
-              </Box>
-            </Box>
-          ))}
+          <FontAwesomeIcon icon={faPhone} />
+          <FontAwesomeIcon icon={faEnvelope} />
         </Box>
-      </Box>
-      <Box className={classes.footer}>
-        <IconButton style={{
+      </HeaderContainer>
+      <Divider />
+      <MessageSection>
+        {messages.map((message) => (
+          <Box
+            key={message.id}
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: message.name === 'John Doe' ? 'flex-start' : 'flex-end',
+              marginBottom: '20px',
+            }}
+          >
+            <Box sx={{
+              display: 'flex', alignItems: 'center', gap: '10px',
+              flexDirection: message.name === 'John Doe' ? 'row' : 'row-reverse'
+            }}>
+              <img src={message.profile} alt="" height="40px" width="40px" style={{ borderRadius: '50%' }} />
+              <Box sx={{
+                backgroundColor: message.name === 'John Doe' ? '#f5f5f5' : 'black',
+                color: message.name === 'John Doe' ? 'black' : 'white',
+                padding: '10px',
+                borderRadius: '50px',
+              }}>
+                <span style={{
+                  fontSize: '14px',
+                }}>{message.message}</span>
+              </Box>
+              <span style={{
+                fontSize: '12px',
+                color: '#9e9e9e'
+              }}>{message.time}</span>
+            </Box>
+          </Box>
+        ))}
+      </MessageSection>
+
+      <Footer>
+        <Box sx={{
+          padding: '9px',
+          borderRadius: '10px',
+          width: '15px',
+          height: '15px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
           backgroundColor: '#f5f5f5',
-          borderRadius: '10%',
-          padding: '4px'
-        }}>
-          <AddIcon />
-        </IconButton>
+        }}><FontAwesomeIcon icon={faPlus} /></Box>
         <TextField
+          style={{
+            flex: '1 1 auto',
+          }}
           placeholder="Type a message"
-          className={classes.textField}
           InputProps={{ disableUnderline: true }}
         />
         <Box sx={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          gap: '5px'
+          gap: '10px'
         }}>
-          <IconButton>
-            <SentimentSatisfiedAltIcon />
-          </IconButton>
-          <IconButton style={{
-            fontSize: '14px',
+          <FontAwesomeIcon icon={faFaceSmile} style={{
+            color: 'black'
+          }} />
+          <Box sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
             backgroundColor: '#f5f5f5',
-            borderRadius: '10%',
-            width: '85px',
-            height: '30px'
+            padding: '9px',
+            gap: '6px',
           }}>
-            Send &nbsp;
-            <SendIcon sx={{
-              fontSize: '18px',
-            }} />
-          </IconButton>
+            <span>
+              Send
+            </span>
+            <FontAwesomeIcon icon={faPaperPlane} />
+          </Box>
         </Box>
-      </Box>
-    </Box>
+      </Footer>
+    </MessageContainer >
   );
 };
 
