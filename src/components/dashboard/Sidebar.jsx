@@ -64,7 +64,7 @@ import { navItems } from './NavItemsData';
 const Sidebar = ({ isOpen }) => {
   return (
     <Box sx={{
-      widht: '100% !important',
+      width: '100% !important',
       backgroundColor: 'black',
       color: 'white',
       height: '100vh',

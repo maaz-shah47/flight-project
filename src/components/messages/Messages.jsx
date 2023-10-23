@@ -7,7 +7,9 @@ import Chat from "./Chat";
 
 const Messages = () => {
   return (
-    <Grid container>
+    <Grid container style={{
+      height: '75vh'
+    }}>
       <Grid item md={12}>
         <Box sx={{
           display: 'flex',
