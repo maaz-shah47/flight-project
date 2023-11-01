@@ -4,12 +4,21 @@ import SearchField from "../SearchField";
 import CardWrapper from "../CardWrapper";
 import MessageList from "./MessageList";
 import Chat from "./Chat";
+import { useState } from "react";
+import MessageDialog from "./MessageDialog";
 
 const Messages = () => {
+  const [open, setOpen] = useState(false);
+
+  const handleOpenMessageDialog = () => {
+    setOpen(true);
+  }
+
   return (
     <Grid container style={{
       height: '75vh'
     }}>
+      <MessageDialog open={open} setOpen={setOpen} />
       <Grid item md={12}>
         <Box sx={{
           display: 'flex',
@@ -36,7 +45,7 @@ const Messages = () => {
               }}>Delete All</Typography>
             </Box>
             <Box>
-              <ButtonWrapper text="Create New" borderRadius="10px" />
+              <ButtonWrapper text="Create New" borderRadius="10px" onClick={handleOpenMessageDialog} />
             </Box>
           </Box>
         </Box>

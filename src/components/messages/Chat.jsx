@@ -3,6 +3,9 @@ import { Box } from '@mui/material';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPhone, faEnvelope, faPlus, faFaceSmile, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import { useEffect, useState } from 'react';
+import io from 'socket.io-client';
+import config from '../../config';
 
 const messages = [
   {
@@ -87,6 +90,13 @@ const Footer = styled(Box)`
   border: 1px solid #e0e0e0;
 `;
 
+const jwtToken = localStorage.getItem('token');
+const socket = io(config.WEBSOCKET_URL, {
+  transports: ['websocket'],
+  extraHeaders: {
+    Authorization: `Bearer ${jwtToken}`,
+  },
+});
 
 const Chat = () => {
   const message = {
@@ -96,6 +106,34 @@ const Chat = () => {
     message: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.',
     time: '12:00 PM',
   }
+  const [messageText, setMessageText] = useState('');
+
+  useEffect(() => {
+    socket.on('connect', () => {
+      console.log('Connected to the server');
+    });
+
+    socket.on('message', (message) => {
+      const data = JSON.parse(message);
+      console.log('Received message:', data);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
+  const sendMessage = () => {
+    console.log("Message: ", messageText);
+    const message = {
+      action: 'send',
+      data: {
+        messageText,
+      },
+    };
+
+    // socket.emit('message', message);
+  };
 
   return (
     <MessageContainer>
@@ -191,6 +229,8 @@ const Chat = () => {
           style={{
             flex: '1 1 auto',
           }}
+          value={messageText}
+          onChange={(e) => setMessageText(e.target.value)}
           placeholder="Type a message"
           InputProps={{ disableUnderline: true }}
         />
@@ -210,7 +250,9 @@ const Chat = () => {
             backgroundColor: '#f5f5f5',
             padding: '9px',
             gap: '6px',
-          }}>
+          }}
+            onClick={sendMessage}
+          >
             <span>
               Send
             </span>
