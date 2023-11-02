@@ -7,6 +7,7 @@ import Settings from '../settings/Settings';
 import { useLocation } from 'react-router-dom';
 import Messages from '../messages/Messages';
 import { useState } from 'react';
+import AirPlane from '../airplanes/AirPlane';
 
 const Dashboard = () => {
   const location = useLocation();
@@ -31,6 +32,7 @@ const Dashboard = () => {
           overflowY: 'scroll !important',
         }}>
           {location.pathname === '/dashboard/flights' && <Flights />}
+          {location.pathname === '/dashboard/airplanes' && <AirPlane />}
           {location.pathname === '/dashboard/seats' && <Seats />}
           {location.pathname === '/dashboard/messages' && <Messages />}
           {location.pathname === '/dashboard/settings' && <Settings />}
