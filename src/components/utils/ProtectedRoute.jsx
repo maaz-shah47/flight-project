@@ -21,10 +21,8 @@ export const ProtectedRoute = ({ children }) => {
     }
   }, []);
 
-  if (!user) {
+  if (!token) {
     return <Navigate to="/login" state={{ from: location }} replace />;
-  } else if (user && user.userId) {
-    return <Navigate to="/dashboard" state={{ from: location }} replace />;
   } else {
     return <>{children}</>;
   }

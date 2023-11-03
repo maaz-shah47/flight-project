@@ -90,14 +90,6 @@ const Footer = styled(Box)`
   border: 1px solid #e0e0e0;
 `;
 
-const jwtToken = localStorage.getItem('token');
-const socket = io(config.WEBSOCKET_URL, {
-  transports: ['websocket'],
-  extraHeaders: {
-    Authorization: `Bearer ${jwtToken}`,
-  },
-});
-
 const Chat = () => {
   const message = {
     id: 1,
@@ -107,24 +99,46 @@ const Chat = () => {
     time: '12:00 PM',
   }
   const [messageText, setMessageText] = useState('');
+  const [messages, setMessages] = useState([]);
 
   useEffect(() => {
+    const jwtToken = localStorage.getItem('token');
+    const socket = io.connect(config.WEBSOCKET_URL, {
+      transports: ['websocket'],
+      upgrade: false,
+      auth: {
+        token: `Bearer ${jwtToken}`,
+      },
+    });
+
     socket.on('connect', () => {
-      console.log('Connected to the server');
+      // Send the userId to the server
+      socket.emit('userId', '1');
     });
 
     socket.on('message', (message) => {
+      // Handle incoming messages from the server
       const data = JSON.parse(message);
       console.log('Received message:', data);
+      // Add new message to the messages state
+      setMessages((prevMessages) => [...prevMessages, data]);
     });
 
+    // Cleanup the socket connection on component unmount
     return () => {
       socket.disconnect();
     };
   }, []);
 
   const sendMessage = () => {
-    console.log("Message: ", messageText);
+    const jwtToken = localStorage.getItem('token');
+    const socket = io.connect(config.WEBSOCKET_URL, {
+      transports: ['websocket'],
+      upgrade: false,
+      auth: {
+        token: `Bearer ${jwtToken}`,
+      },
+    });
     const message = {
       action: 'send',
       data: {
@@ -132,7 +146,9 @@ const Chat = () => {
       },
     };
 
-    // socket.emit('message', message);
+    console.log("Message: ", message);
+    socket.send(JSON.stringify(message));
+
   };
 
   return (

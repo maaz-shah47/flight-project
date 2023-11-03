@@ -7,31 +7,47 @@ import io from 'socket.io-client';
 import config from './config';
 import { useEffect } from "react";
 
-const jwtToken = localStorage.getItem('token');
-const socket = io(config.WEBSOCKET_URL, {
-  transportOptions: {
-    polling: {
-      extraHeaders: {
-        Authorization: `Bearer ${jwtToken}`,
-      },
-    },
-  },
-});
 function App() {
   useEffect(() => {
-    socket.on('connect', () => {
-      console.log('Connected to the server');
+    const jwtToken = localStorage.getItem('token');
+    const socket = io('ws://127.0.0.1:3300', {
+      transports: ['websocket'],
+      upgrade: false,
+      auth: {
+        token: `Bearer ${jwtToken}`,
+      },
     });
 
-    socket.on('message', (message) => {
-      const data = JSON.parse(message);
+    socket.on('connect', () => {
+      console.log('Connected to server');
+    });
+
+    socket.on('message', (data) => {
       console.log('Received message:', data);
+    });
+
+    socket.on('disconnect', () => {
+      console.log('Disconnected from server');
     });
 
     return () => {
       socket.disconnect();
     };
   }, []);
+  // useEffect(() => {
+  //   socket.on('connect', () => {
+  //     console.log('Connected to the server');
+  //   });
+
+  //   socket.on('message', (message) => {
+  //     const data = JSON.parse(message);
+  //     console.log('Received message:', data);
+  //   });
+
+  //   return () => {
+  //     socket.disconnect();
+  //   };
+  // }, []);
 
   return (
     <BrowserRouter>

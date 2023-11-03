@@ -71,11 +71,6 @@ const Login = () => {
           "token",
           registerRequestData.jwt
         );
-
-        const decodedToken = jwtDecode(registerRequestData.jwt);
-        localStorage.setItem("user", JSON.stringify(decodedToken));
-
-        console.log("decodedToken", decodedToken);
         navigate("/dashboard");
       }
     } catch ({ response }) {

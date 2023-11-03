@@ -1,4 +1,3 @@
-import React from "react";
 import { Typography, Button, Grid, Paper } from "@mui/material";
 import FlightTable from "./AirPlaneTable";
 import SearchBar from "./SearchBar";
