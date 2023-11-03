@@ -24,7 +24,7 @@ const AirPlane = () => {
   const [loader, setLoader] = useState(true);
 
   useEffect(() => {
-    const fetchFlights = async () => {
+    const fetchPlanes = async () => {
       let registerRequest;
       try {
         registerRequest = await axios.get(
@@ -50,7 +50,7 @@ const AirPlane = () => {
       }
     };
 
-    fetchFlights();
+    fetchPlanes();
   }, []);
 
   useEffect(() => {
