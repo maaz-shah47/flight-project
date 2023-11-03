@@ -1,10 +1,30 @@
-import React from "react";
-import { Typography, Button, Grid, Paper } from "@mui/material";
+import React, { useState } from "react";
+import {
+  Typography,
+  Button,
+  Grid,
+  Paper,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+} from "@mui/material";
 import FlightTable from "./FlightTable";
 import SearchBar from "./SearchBar";
 import CardWrapper from "../CardWrapper";
 
 const Flights = () => {
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <Grid container spacing={2} alignItems="center">
       <Grid item xs={6}>
@@ -19,11 +39,12 @@ const Flights = () => {
             backgroundColor: "black",
             color: "white",
             borderRadius: "15px",
-            padding: "10px 50px", // Add padding for space on the left and right
+            padding: "10px 50px",
             "&:hover": {
-              backgroundColor: "gray", // Change hover color
+              backgroundColor: "gray",
             },
           }}
+          onClick={handleOpen}
         >
           New Flights
         </Button>
@@ -35,6 +56,69 @@ const Flights = () => {
           <FlightTable />
         </CardWrapper>
       </Grid>
+
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle sx={{ backgroundColor: "black", color: "white" }}>
+          New Flight
+        </DialogTitle>
+        <br />
+        <DialogContent>
+          <Grid container spacing={2}>
+            <Grid item xs={6}>
+              <Typography variant="subtitle1">Upload Image</Typography>
+              <TextField
+                fullWidth
+                variant="outlined"
+                margin="normal"
+                placeholder="Browse"
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <Typography variant="subtitle1">Number</Typography>
+              <TextField
+                fullWidth
+                variant="outlined"
+                margin="normal"
+                placeholder="Type here"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="subtitle1">Total Seats</Typography>
+              <TextField
+                fullWidth
+                variant="outlined"
+                margin="normal"
+                placeholder="8"
+              />
+            </Grid>
+          </Grid>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={handleClose}
+            variant="outlined"
+            sx={{
+              borderColor: "black",
+              color: "black",
+            }}
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={handleClose}
+            color="primary"
+            sx={{
+              backgroundColor: "black",
+              color: "white",
+              "&:hover": {
+                backgroundColor: "gray",
+              },
+            }}
+          >
+            Submit
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Grid>
   );
 };
