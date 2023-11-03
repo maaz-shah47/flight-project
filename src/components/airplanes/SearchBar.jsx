@@ -7,8 +7,7 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import { Typography } from "@mui/material";
 
-function SearchBar() {
-  const [searchQuery, setSearchQuery] = useState("");
+function SearchBar({ searchQuery, setSearchQuery }) {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   const totalItems = 100;

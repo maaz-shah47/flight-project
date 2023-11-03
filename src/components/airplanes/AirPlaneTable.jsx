@@ -28,52 +28,52 @@ const dummyData = [
   // Add more dummy data as needed
 ];
 
-const FlightTable = () => {
+const FlightTable = ({ planes }) => {
   return (
-      <TableContainer component={Paper}>
-        <Table sx={{ border: "none" }}>
-          <TableHead>
-            <TableRow sx={{ backgroundColor: "black" }}>
-              <TableCell sx={{ color: "white" }}>Image</TableCell>
-              <TableCell sx={{ color: "white" }}>Number</TableCell>
-              <TableCell sx={{ color: "white" }}>Total Seats</TableCell>
-              <TableCell sx={{ color: "white" }}>Registered Date</TableCell>
-              <TableCell sx={{ color: "white" }}>Action</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {dummyData.map((data, index) => (
-              <TableRow key={index} sx={{ borderBottom: "none" }}>
-                <TableCell><img src={AiroplaneIcon} alt="Seat Icon" style={{ height: '50px' }} /></TableCell>
-                <TableCell>{data.number}</TableCell>
-                <TableCell>{data.seats}</TableCell>
-                <TableCell>{data.registered_date}</TableCell>
-                <TableCell>
-                  <IconButton
-                    style={{
-                      backgroundColor: '#f5f5f5',
-                      marginLeft: "5px",
-                      boxShadow: '1px 1px 1px 1px rgba(0,0,0,0.1)'
-                    }}
-                  >
-                    <EditIcon sx={{ cursor: "pointer", color: "black" }} />
-                  </IconButton>
+    <TableContainer component={Paper}>
+      <Table sx={{ border: "none" }}>
+        <TableHead>
+          <TableRow sx={{ backgroundColor: "black" }}>
+            <TableCell sx={{ color: "white" }}>Image</TableCell>
+            <TableCell sx={{ color: "white" }}>Plane Name</TableCell>
+            <TableCell sx={{ color: "white" }}>Number</TableCell>
+            <TableCell sx={{ color: "white" }}>Total Seats</TableCell>
+            <TableCell sx={{ color: "white" }}>Action</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {planes && planes.map((data, index) => (
+            <TableRow key={index} sx={{ borderBottom: "none" }}>
+              <TableCell><img src={AiroplaneIcon} alt="Seat Icon" style={{ height: '50px' }} /></TableCell>
+              <TableCell>{data.planename}</TableCell>
+              <TableCell>{data.codename}</TableCell>
+              <TableCell>{data.planecapacity}</TableCell>
+              <TableCell>
+                <IconButton
+                  style={{
+                    backgroundColor: '#f5f5f5',
+                    marginLeft: "5px",
+                    boxShadow: '1px 1px 1px 1px rgba(0,0,0,0.1)'
+                  }}
+                >
+                  <EditIcon sx={{ cursor: "pointer", color: "black" }} />
+                </IconButton>
 
-                  <IconButton
-                    style={{
-                      marginLeft: "5px",
-                      backgroundColor: '#f5f5f5',
-                      boxShadow: '1px 1px 1px 1px rgba(0,0,0,0.1)'
-                    }}
-                  >
-                    <DeleteIcon sx={{ cursor: "pointer", color: "black" }} />
-                  </IconButton>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+                <IconButton
+                  style={{
+                    marginLeft: "5px",
+                    backgroundColor: '#f5f5f5',
+                    boxShadow: '1px 1px 1px 1px rgba(0,0,0,0.1)'
+                  }}
+                >
+                  <DeleteIcon sx={{ cursor: "pointer", color: "black" }} />
+                </IconButton>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 };
 

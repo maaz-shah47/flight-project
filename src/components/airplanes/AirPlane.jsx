@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Typography,
   Button,
@@ -13,9 +13,53 @@ import {
 import FlightTable from "./AirPlaneTable";
 import SearchBar from "./SearchBar";
 import CardWrapper from "../CardWrapper";
+import config from "../../config";
+import axios from "axios";
 
 const AirPlane = () => {
   const [open, setOpen] = useState(false);
+  const [planes, setPlanes] = useState([]);
+  const [filteredPlanes, setFilteredPlanes] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [loader, setLoader] = useState(true);
+
+  useEffect(() => {
+    const fetchFlights = async () => {
+      let registerRequest;
+      try {
+        registerRequest = await axios.get(
+          `${config.SERVER_URL}/planes`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+              ContentType: "application/json",
+            },
+          }
+        );
+
+        const { data: registerRequestData } = registerRequest;
+        console.log("RegisterRequestData", registerRequestData);
+        if (registerRequestData) {
+          setLoader(false);
+          setPlanes(registerRequestData.response.planes);
+          setFilteredPlanes(registerRequestData.response.planes);
+        }
+      } catch ({ response }) {
+        registerRequest = response;
+        setLoader(false);
+      }
+    };
+
+    fetchFlights();
+  }, []);
+
+  useEffect(() => {
+    setFilteredPlanes(
+      planes.filter((plane) =>
+        plane.codename.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    );
+  }, [searchQuery])
 
   const handleOpen = () => {
     setOpen(true);
@@ -51,9 +95,9 @@ const AirPlane = () => {
       </Grid>
       <Grid item xs={12}>
         <CardWrapper>
-          <SearchBar />
+          <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
           <br />
-          <FlightTable />
+          <FlightTable planes={filteredPlanes} />
         </CardWrapper>
       </Grid>
 
@@ -61,7 +105,7 @@ const AirPlane = () => {
         <DialogTitle sx={{ backgroundColor: "black", color: "white" }}>
           New Airplane
         </DialogTitle>
-        <br/>
+        <br />
         <DialogContent>
           <Grid container spacing={2}>
             <Grid item xs={12}>
