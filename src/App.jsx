@@ -3,51 +3,35 @@ import Dashboard from './components/dashboard/Dashboard';
 import './App.css';
 import Login from "./components/login/Login";
 import { ProtectedRoute } from "./components/utils/ProtectedRoute";
-import io from 'socket.io-client';
-import config from './config';
 import { useEffect } from "react";
 
 function App() {
   useEffect(() => {
     const jwtToken = localStorage.getItem('token');
-    const socket = io('ws://127.0.0.1:3300', {
-      transports: ['websocket'],
-      upgrade: false,
-      auth: {
-        token: `Bearer ${jwtToken}`,
-      },
-    });
+    const socket = new WebSocket(`ws://127.0.0.1:3300?token=Bearer%20${jwtToken}`); // Replace with your actual backend WebSocket URL
 
-    socket.on('connect', () => {
-      console.log('Connected to server');
-    });
+    socket.onopen = () => {
+      console.log('WebSocket connection opened');
+    };
 
-    socket.on('message', (data) => {
-      console.log('Received message:', data);
-    });
+    socket.onmessage = (event) => {
+      const message = JSON.parse(event.data);
+      console.log('Received message:', message);
+    };
 
-    socket.on('disconnect', () => {
-      console.log('Disconnected from server');
-    });
+    socket.onclose = (event) => {
+      console.log('Socket closed:', event);
+    };
+
+    socket.onerror = (error) => {
+      console.error('Socket error:', error);
+    };
 
     return () => {
-      socket.disconnect();
+      socket.close();
     };
   }, []);
-  // useEffect(() => {
-  //   socket.on('connect', () => {
-  //     console.log('Connected to the server');
-  //   });
 
-  //   socket.on('message', (message) => {
-  //     const data = JSON.parse(message);
-  //     console.log('Received message:', data);
-  //   });
-
-  //   return () => {
-  //     socket.disconnect();
-  //   };
-  // }, []);
 
   return (
     <BrowserRouter>
