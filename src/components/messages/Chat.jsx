@@ -36,7 +36,7 @@ const Footer = styled(Box)`
   border: 1px solid #e0e0e0;
 `;
 
-const Chat = ({ messages, socket }) => {
+const Chat = ({ messages, socket, userId }) => {
   const message = {
     id: 1,
     name: 'John Doe',
@@ -53,9 +53,9 @@ const Chat = ({ messages, socket }) => {
       data: {
         messageText: messageText,
         sentBy: 'admin',
-        sentTo: '3',
+        sentTo: userId.toString(),
         readBy: [],
-        users: ['admin', '3']
+        users: ['admin', userId.toString()]
       }
     };
 
@@ -115,10 +115,10 @@ const Chat = ({ messages, socket }) => {
       </HeaderContainer>
       <Divider />
       <MessageSection>
-        {messages.map((message) => (
+        {messages.map((message, index) => (
           <>
             <Box
-              key={message.id}
+              key={index}
               sx={{
                 display: 'flex',
                 flexDirection: 'column',

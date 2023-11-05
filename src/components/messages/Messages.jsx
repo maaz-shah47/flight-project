@@ -119,7 +119,6 @@ const Messages = () => {
           message => message.sentBy === user.id.toString() || message.sentTo === user.id.toString()
         );
 
-        console.log("MESSAGES FROM USER", messagesFromUser);
         let lastMessage;
         if (messagesFromUser.length > 0) {
           lastMessage = messagesFromUser.reduce((prev, current) => {
@@ -245,7 +244,7 @@ const Messages = () => {
               height: '380px',
             }}>
               {filteredMessages.length > 0 ?
-                <Chat messages={filteredMessages} socket={socket} />
+                <Chat messages={filteredMessages} socket={socket} userId={userId} />
                 :
                 <Box sx={{
                   display: 'flex',
@@ -253,7 +252,7 @@ const Messages = () => {
                   alignItems: 'center',
                   height: '100%'
                 }}>
-                  <Typography variant="h6">No messages found</Typography>
+                  <Typography variant="h6">Click on Conversation to view messages.</Typography>
                 </Box>
               }
 
