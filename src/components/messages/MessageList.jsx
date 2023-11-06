@@ -1,66 +1,8 @@
 import { Box } from "@mui/material";
 import Message from "./MessageItem";
 
-const MESSAGE_DATA = [
-  {
-    id: 1,
-    name: 'John Doe',
-    profile: 'https://static.vecteezy.com/system/resources/previews/002/275/847/original/male-avatar-profile-icon-of-smiling-caucasian-man-vector.jpg',
-    message: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.',
-    time: '12:00 PM',
-  },
-  {
-    id: 2,
-    name: 'John Doe',
-    profile: 'https://static.vecteezy.com/system/resources/previews/002/275/847/original/male-avatar-profile-icon-of-smiling-caucasian-man-vector.jpg',
-    message: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.',
-    time: '12:00 PM',
-  },
-  {
-    id: 3,
-    name: 'John Doe',
-    profile: 'https://static.vecteezy.com/system/resources/previews/002/275/847/original/male-avatar-profile-icon-of-smiling-caucasian-man-vector.jpg',
-    message: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.',
-    time: '12:00 PM',
-  },
-  {
-    id: 4,
-    name: 'John Doe',
-    profile: 'https://static.vecteezy.com/system/resources/previews/002/275/847/original/male-avatar-profile-icon-of-smiling-caucasian-man-vector.jpg',
-    message: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.',
-    time: '12:00 PM',
-  },
-  {
-    id: 5,
-    name: 'John Doe',
-    profile: 'https://static.vecteezy.com/system/resources/previews/002/275/847/original/male-avatar-profile-icon-of-smiling-caucasian-man-vector.jpg',
-    message: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.',
-    time: '12:00 PM',
-  },
-  {
-    id: 6,
-    name: 'John Doe',
-    profile: 'https://static.vecteezy.com/system/resources/previews/002/275/847/original/male-avatar-profile-icon-of-smiling-caucasian-man-vector.jpg',
-    message: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.',
-    time: '12:00 PM',
-  },
-  {
-    id: 7,
-    name: 'John Doe',
-    profile: 'https://static.vecteezy.com/system/resources/previews/002/275/847/original/male-avatar-profile-icon-of-smiling-caucasian-man-vector.jpg',
-    message: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.',
-    time: '12:00 PM',
-  },
-  {
-    id: 8,
-    name: 'John Doe',
-    profile: 'https://static.vecteezy.com/system/resources/previews/002/275/847/original/male-avatar-profile-icon-of-smiling-caucasian-man-vector.jpg',
-    message: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.',
-    time: '12:00 PM',
-  }
-]
 
-const MessageList = () => {
+const MessageList = ({ usersList, handleShowMessages }) => {
   return (
     <Box
       sx={{
@@ -83,8 +25,8 @@ const MessageList = () => {
         },
       }}
     >
-      {MESSAGE_DATA.map((message) => (
-        <Message key={message.id} item={message} />
+      {usersList.map((data) => (
+        <Message key={data.id} item={data} handleShowMessages={handleShowMessages} />
       ))}
     </Box>
   );

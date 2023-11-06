@@ -1,97 +1,42 @@
-import { makeStyles } from '@material-ui/core/styles';
-import { Divider, TextField, IconButton, Typography } from '@material-ui/core';
-import CallIcon from '@mui/icons-material/Call';
-import EmailIcon from '@mui/icons-material/Email';
-import SendIcon from '@mui/icons-material/Send';
+import { Divider, TextField } from '@material-ui/core';
 import { Box } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt';
+import styled from 'styled-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPhone, faEnvelope, faPlus, faFaceSmile, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import { useState } from 'react';
 
-const messages = [
-  {
-    id: 1,
-    name: 'John Doe',
-    profile: 'https://static.vecteezy.com/system/resources/previews/002/275/847/original/male-avatar-profile-icon-of-smiling-caucasian-man-vector.jpg',
-    message: 'Hello, how are you?',
-    time: '12:00 PM',
-  },
-  {
-    id: 2,
-    name: 'Jane Doe',
-    profile: 'https://static.vecteezy.com/system/resources/previews/002/275/847/original/male-avatar-profile-icon-of-smiling-caucasian-man-vector.jpg',
-    message: 'I am doing great. Thanks for asking!',
-    time: '12:05 PM',
-  },
-  {
-    id: 3,
-    name: 'John Doe',
-    profile: 'https://static.vecteezy.com/system/resources/previews/002/275/847/original/male-avatar-profile-icon-of-smiling-caucasian-man-vector.jpg',
-    message: 'Hello, how are you?',
-    time: '12:00 PM',
-  },
-  {
-    id: 4,
-    name: 'Jane Doe',
-    profile: 'https://static.vecteezy.com/system/resources/previews/002/275/847/original/male-avatar-profile-icon-of-smiling-caucasian-man-vector.jpg',
-    message: 'I am doing great. Thanks for asking!',
-    time: '12:05 PM',
-  },
-  {
-    id: 5,
-    name: 'Jane Doe',
-    profile: 'https://static.vecteezy.com/system/resources/previews/002/275/847/original/male-avatar-profile-icon-of-smiling-caucasian-man-vector.jpg',
-    message: 'I am doing great. Thanks for asking!',
-    time: '12:05 PM',
-  },
-  {
-    id: 6,
-    name: 'Jane Doe',
-    profile: 'https://static.vecteezy.com/system/resources/previews/002/275/847/original/male-avatar-profile-icon-of-smiling-caucasian-man-vector.jpg',
-    message: 'I am doing great. Thanks for asking!',
-    time: '12:05 PM',
-  },
-  {
-    id: 3,
-    name: 'John Doe',
-    profile: 'https://static.vecteezy.com/system/resources/previews/002/275/847/original/male-avatar-profile-icon-of-smiling-caucasian-man-vector.jpg',
-    message: 'Hello, how are you?',
-    time: '12:00 PM',
-  },
-];
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100%',
-    width: '100%',
-  },
-  header: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  divider: {
-    margin: theme.spacing(2, 0),
-  },
-  messages: {
-    flex: '1 1 auto',
-    overflowY: 'auto',
-  },
-  footer: {
-    display: 'flex',
-    gap: '10px',
-    alignItems: 'center',
-    padding: theme.spacing(1, 3),
-    border: '1px solid #e0e0e0',
-  },
-  textField: {
-    flex: '1 1 auto',
-  },
-}));
+const MessageContainer = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  padding: 5px
+`;
 
-const Chat = () => {
-  const classes = useStyles();
+const HeaderContainer = styled(Box)`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 0 10px 5px 10px;
+`;
 
+const MessageSection = styled(Box)`
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 15px 10px 10px 10px;
+`;
+
+const Footer = styled(Box)`
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #e0e0e0;
+`;
+
+const Chat = ({ messages, socket, userId }) => {
   const message = {
     id: 1,
     name: 'John Doe',
@@ -99,137 +44,160 @@ const Chat = () => {
     message: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.',
     time: '12:00 PM',
   }
+  const [messageText, setMessageText] = useState('');
+  const user = JSON.parse(localStorage.getItem('user'));
+
+  const sendMessage = () => {
+    const message = {
+      action: 'send',
+      data: {
+        messageText: messageText,
+        sentBy: 'admin',
+        sentTo: userId.toString(),
+        readBy: [],
+        users: ['admin', userId.toString()]
+      }
+    };
+
+    socket.send(JSON.stringify(message));
+    setMessageText('');
+  };
+
+  const formatDateString = (dateString) => {
+    const options = { hour: '2-digit', minute: '2-digit' };
+    const formattedTime = new Date(dateString).toLocaleTimeString('en-US', options);
+    return formattedTime;
+  };
+
 
   return (
-    <Box className={classes.root}>
-      <Box className={classes.header}>
+    <MessageContainer>
+      <HeaderContainer>
+        <Box>
+          <img src={message.profile} alt="" height='40px' width='40px' style={{
+            borderRadius: '50%',
+          }} />
+        </Box>
         <Box sx={{
           display: 'flex',
-          alignItems: 'center',
-          gap: '10px'
+          flex: 2,
+          flexDirection: 'column',
         }}>
+          <span>{message.name}</span>
           <Box>
-            <img src={message.profile} alt="" height='40px' width='40px' style={{
+            <div style={{
+              height: '6px',
+              width: '6px',
               borderRadius: '50%',
+              backgroundColor: 'blue',
+              display: 'inline-block',
+              marginRight: '5px'
             }} />
-          </Box>
-          <Box sx={{
-            display: 'flex',
-            flexDirection: 'column',
-          }}>
-            <Typography variant="subtitle2">
-              {message.name}</Typography>
-            <Box sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              gap: '6px'
-            }}>
-              <Typography style={{
-                fontSize: '10px'
-              }}>
-                <div style={{
-                  height: '6px',
-                  width: '6px',
-                  borderRadius: '50%',
-                  backgroundColor: 'blue',
-                  display: 'inline-block',
-                  marginRight: '5px'
-                }} />
-                Online</Typography>
-              <Typography style={{
-                fontSize: '10px'
-              }}>
-                {message.time}
-              </Typography>
-            </Box>
+            <span style={{
+              fontSize: '12px',
+              color: '#9e9e9e',
+              marginRight: '5px'
+            }}>Online</span>
+            <span style={{
+              fontSize: '12px',
+              color: '#9e9e9e',
+            }}>{message.time}</span>
           </Box>
         </Box>
-        <Box>
-          <IconButton>
-            <CallIcon />
-          </IconButton>
-          <IconButton>
-            <EmailIcon />
-          </IconButton>
-        </Box>
-      </Box>
-      <Divider className={classes.divider} />
-      <Box className={classes.messages}>
         <Box sx={{
-          flex: '1 1 auto',
-          overflowY: 'auto',
+          display: 'flex',
+          gap: '10px',
+          alignItems: 'center',
         }}>
-          {messages.map((message) => (
+          <FontAwesomeIcon icon={faPhone} />
+          <FontAwesomeIcon icon={faEnvelope} />
+        </Box>
+      </HeaderContainer>
+      <Divider />
+      <MessageSection>
+        {messages.map((message, index) => (
+          <>
             <Box
-              key={message.id}
+              key={index}
               sx={{
                 display: 'flex',
                 flexDirection: 'column',
-                alignItems: message.name === 'John Doe' ? 'flex-start' : 'flex-end',
+                alignItems: (user.userType == 'admin' && message.sentBy == 'admin') || message.sentBy == user.id ? 'flex-end' : 'flex-start',
                 marginBottom: '20px',
               }}
             >
               <Box sx={{
                 display: 'flex', alignItems: 'center', gap: '10px',
-                flexDirection: message.name === 'John Doe' ? 'row' : 'row-reverse'
+                flexDirection: (user.userType == 'admin' && message.sentBy == 'admin') || message.sentBy == user.id ? 'row-reverse' : 'row'
               }}>
-                <img src={message.profile} alt="" height="40px" width="40px" style={{ borderRadius: '50%' }} />
+                <img src="https://cdn.iconscout.com/icon/free/png-256/free-avatar-370-456322.png" alt="" height="40px" width="40px" style={{ borderRadius: '50%' }} />
                 <Box sx={{
-                  backgroundColor: message.name === 'John Doe' ? '#f5f5f5' : 'black',
-                  color: message.name === 'John Doe' ? 'black' : 'white',
+                  backgroundColor: (user.userType == 'admin' && message.sentBy == 'admin') || message.sentBy == user.id ? '#f5f5f5' : 'black',
+                  color: (user.userType == 'admin' && message.sentBy == 'admin') || message.sentBy == user.id ? 'black' : 'white',
                   padding: '10px',
                   borderRadius: '50px',
                 }}>
-                  <Typography style={{
-                    fontSize: '12px'
-                  }}>{message.message}</Typography>
+                  <span style={{
+                    fontSize: '14px',
+                  }}>{message.messageText}</span>
                 </Box>
-                <Typography variant="caption" sx={{ mt: '5px', color: 'gray' }}>
-                  {message.time}
-                </Typography>
+                <span style={{
+                  fontSize: '12px',
+                  color: '#9e9e9e'
+                }}>{formatDateString(message.createdAt)}</span>
               </Box>
             </Box>
-          ))}
-        </Box>
-      </Box>
-      <Box className={classes.footer}>
-        <IconButton style={{
+          </>
+        ))}
+      </MessageSection>
+
+      <Footer>
+        <Box sx={{
+          padding: '9px',
+          borderRadius: '10px',
+          width: '15px',
+          height: '15px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
           backgroundColor: '#f5f5f5',
-          borderRadius: '10%',
-          padding: '4px'
-        }}>
-          <AddIcon />
-        </IconButton>
+        }}><FontAwesomeIcon icon={faPlus} /></Box>
         <TextField
+          style={{
+            flex: '1 1 auto',
+          }}
+          value={messageText}
+          onChange={(e) => setMessageText(e.target.value)}
           placeholder="Type a message"
-          className={classes.textField}
           InputProps={{ disableUnderline: true }}
         />
         <Box sx={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          gap: '5px'
+          gap: '10px'
         }}>
-          <IconButton>
-            <SentimentSatisfiedAltIcon />
-          </IconButton>
-          <IconButton style={{
-            fontSize: '14px',
+          <FontAwesomeIcon icon={faFaceSmile} style={{
+            color: 'black'
+          }} />
+          <Box sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
             backgroundColor: '#f5f5f5',
-            borderRadius: '10%',
-            width: '85px',
-            height: '30px'
-          }}>
-            Send &nbsp;
-            <SendIcon sx={{
-              fontSize: '18px',
-            }} />
-          </IconButton>
+            padding: '9px',
+            gap: '6px',
+          }}
+            onClick={sendMessage}
+          >
+            <span>
+              Send
+            </span>
+            <FontAwesomeIcon icon={faPaperPlane} />
+          </Box>
         </Box>
-      </Box>
-    </Box>
+      </Footer>
+    </MessageContainer >
   );
 };
 
