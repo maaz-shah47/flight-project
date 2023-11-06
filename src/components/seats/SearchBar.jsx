@@ -5,16 +5,38 @@ import SearchIcon from "@mui/icons-material/Search";
 import ChevronLeftOutlined from "@mui/icons-material/ChevronLeftOutlined";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
-import { Typography } from "@mui/material";
+import { Typography, List, ListItem, ListItemText } from "@mui/material";
 
-function SearchBar() {
+function SearchBar({ planes, onSearchChange }) {
   const [searchQuery, setSearchQuery] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   const totalItems = 100;
 
   const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value);
+    const query = e.target.value;
+    console.log(query);
+    setSearchQuery(query);
+    
+    // Clear suggestions if the query is empty
+    if (query === "") {
+      setSuggestions([]);
+      onSearchChange(null);
+    } else {
+      // Filter the planes based on the query
+      const filteredSuggestions = planes.filter((plane) =>
+        plane.planename.toLowerCase().includes(query.toLowerCase())
+      );
+      setSuggestions(filteredSuggestions);
+    }
+  };
+  
+
+  const handleSuggestionSelect = (selectedPlane) => {
+    setSearchQuery(selectedPlane.planename);
+    onSearchChange(selectedPlane.id);
+    setSuggestions([]); // Clear suggestions
   };
 
   return (
@@ -25,10 +47,9 @@ function SearchBar() {
         justifyContent: "space-between",
       }}
     >
-      <div style={{ display: "flex", alignItems: "center" }}>
+      <div style={{ display: "flex", alignItems: "center", position: "relative" }}>
         <TextField
           style={{ width: "300px", marginRight: "16px" }}
-          variant="outlined"
           label=""
           value={searchQuery}
           onChange={handleSearchChange}
@@ -49,9 +70,32 @@ function SearchBar() {
             ),
           }}
         />
+        {suggestions.length > 0 && (
+          <List
+            style={{
+              position: "absolute",
+              top: "100%", // Adjust the top position to align with the input field
+              left: 0,
+              right: 0,
+              zIndex: 1, // Ensure suggestions are displayed above the input field
+              backgroundColor: "white", // You can customize the appearance
+              border: "1px solid #ccc", // Add a border for visual separation
+            }}
+          >
+            {suggestions.map((plane) => (
+              <ListItem
+                button
+                key={plane.id}
+                onClick={() => handleSuggestionSelect(plane)}
+              >
+                <ListItemText primary={plane.planename} />
+              </ListItem>
+            ))}
+          </List>
+        )}
       </div>
       <div style={{ display: "flex", alignItems: "center" }}>
-      <Typography
+        <Typography
           style={{ display: "flex", alignItems: "center", marginRight: "10px" }}
           sx={{ fontSize: 12 }}
         >
@@ -65,8 +109,8 @@ function SearchBar() {
             borderRadius: "50%",
             border: "1px solid black",
             marginLeft: "5px",
-            width: "30px", // Set the desired width
-            height: "30px", // Set the desired height
+            width: "30px",
+            height: "30px",
           }}
           onClick={() => setCurrentPage(currentPage - 1)}
           disabled={currentPage === 1}
@@ -78,8 +122,8 @@ function SearchBar() {
             borderRadius: "50%",
             border: "1px solid black",
             marginLeft: "5px",
-            width: "30px", // Set the desired width
-            height: "30px", // Set the desired height
+            width: "30px",
+            height: "30px",
           }}
           onClick={() => setCurrentPage(currentPage + 1)}
           disabled={currentPage === Math.ceil(totalItems / itemsPerPage)}
