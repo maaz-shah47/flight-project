@@ -11,8 +11,10 @@ import axios from "axios";
 
 const extractUniqueUserIds = (messages) => {
   const usersWithAdmin = messages
-    .filter(obj => obj.sentTo === 'admin')
-    .map(obj => obj.sentBy);
+    .filter(obj => {
+      return obj.sentTo === 'admin' || obj.sentBy === 'admin';
+    })
+    .map(obj => obj.sentBy !== 'admin' ? obj.sentBy : obj.sentTo);
 
   const uniqueUserIds = [...new Set(usersWithAdmin)];
   return uniqueUserIds;
@@ -103,8 +105,6 @@ const Messages = () => {
   }, []);
 
   useEffect(() => {
-    console.log("MESSAGES CHANGED", messages);
-    console.log("USERS: ", users);
     if (messages && messages.length > 0) {
       setUniqueUserIds(extractUniqueUserIds(messages));
     }
@@ -137,8 +137,11 @@ const Messages = () => {
 
       console.log('Filtered users with last messages:', filteredUsersWithLastMessage);
       setFilteredMessageListData(filteredUsersWithLastMessage);
+      if (searchText) {
+        setFilteredMessageListData(filteredMessageListData.filter(user => user.username.toLowerCase().includes(searchText.toLowerCase())));
+      }
     }
-  }, [users, uniqueUserIds, messages]);
+  }, [users, uniqueUserIds, messages, searchText]);
 
   const handleOpenMessageDialog = () => {
     setOpen(true);
@@ -146,7 +149,6 @@ const Messages = () => {
 
   const handleSearchChange = (event) => {
     setSearchText(event.target.value);
-    setFilteredMessageListData(filteredMessageListData.filter(user => user.username.toLowerCase().includes(event.target.value.toLowerCase())));
   };
 
   const handleShowMessages = (userId) => {
@@ -169,7 +171,7 @@ const Messages = () => {
     <Grid container style={{
       height: '75vh'
     }}>
-      <MessageDialog open={open} setOpen={setOpen} />
+      <MessageDialog open={open} setOpen={setOpen} users={users} socket={socket} />
       <Grid item md={12}>
         <Box sx={{
           display: 'flex',

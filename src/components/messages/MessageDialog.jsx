@@ -1,22 +1,46 @@
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, IconButton, TextField, Typography } from "@mui/material"
 import CloseIcon from '@mui/icons-material/Close';
 import { useState } from "react";
+import NewMessageTextField from "./NewMessageTextField";
 
-const MessageDialog = ({ open, setOpen }) => {
+const MessageDialog = ({ open, setOpen, users, socket }) => {
   const [sendTo, setSendTo] = useState('');
-  const [message, setMessage] = useState('');
+  const [messageText, setMessageText] = useState('');
+  const [userId, setUserId] = useState(null);
 
   const handleSendToChange = (e) => {
     setSendTo(e.target.value);
   };
 
   const handleMessageChange = (e) => {
-    setMessage(e.target.value);
+    setMessageText(e.target.value);
+  };
+
+  const handleSearchChange = (id) => {
+    setUserId(id);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission here
+
+    console.log("MESSAGE, USERID, OPEN", messageText, userId, open);
+    if (messageText) {
+      const message = {
+        action: 'send',
+        data: {
+          messageText: messageText,
+          sentBy: 'admin',
+          sentTo: userId.toString(),
+          readBy: [],
+          users: ['admin', userId.toString()]
+        }
+      }
+      console.log("MESSAGE: ", messageText);
+      socket.send(JSON.stringify(message));
+      setMessageText('');
+      setOpen(false);
+      setUserId(null);
+    }
   };
   return (
     <Dialog open={open} sx={{
@@ -55,22 +79,17 @@ const MessageDialog = ({ open, setOpen }) => {
 
       <DialogContent>
         <Box sx={{ mt: 3 }}>
-          <form onSubmit={handleSubmit}>
+          <form>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               <Typography variant="body2">Send To</Typography>
-              <TextField
-                label="Type Name"
-                variant="outlined"
-                value={sendTo}
-                onChange={handleSendToChange}
-              />
+              <NewMessageTextField users={users} onSearchChange={handleSearchChange} />
               <Typography variant="body2">Message</Typography>
               <TextField
                 label="Type Here"
                 variant="outlined"
                 multiline
                 minRows={6}
-                value={message}
+                value={messageText}
                 onChange={handleMessageChange}
               />
             </Box>
@@ -101,7 +120,7 @@ const MessageDialog = ({ open, setOpen }) => {
             color: 'white',
           }
         }}
-
+          onClick={handleSubmit}
         >Send</Button>
       </DialogActions>
     </Dialog >
