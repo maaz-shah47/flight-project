@@ -1,4 +1,4 @@
-import { Typography, Grid } from "@mui/material";
+import { Typography, Grid, Box } from "@mui/material";
 import SearchBar from "./SearchBar";
 import CardWrapper from "../CardWrapper";
 import { useEffect, useState } from "react";
@@ -24,18 +24,7 @@ const Seat = ({ seatData }) => {
   );
 };
 
-// const generateSeatsData = (totalSeats, bookedSeats) => {
-//   const seatData = [];
-//   for (let i = 1; i <= totalSeats; i++) {
-//     const isBooked = bookedSeats.includes(i);
-//     seatData.push({ seatNumber: i, isBooked });
-//   }
-//   return seatData;
-// };
-
-
 const generateSeatsData = (seatList) => {
-  console.log("IN GENERATE SEATS DATA")
   const seatData = [];
   for (const [seat, status] of Object.entries(seatList)) {
     seatData.push({ seatNumber: seat, status: status });
@@ -46,21 +35,23 @@ const generateSeatsData = (seatList) => {
 const Seats = () => {
   const [planes, setPlanes] = useState([]);
   const [loader, setLoader] = useState(true);
-  const [selectedPlaneId, setSelectedPlaneId] = useState(2);
+  const [selectedPlaneId, setSelectedPlaneId] = useState(null);
   const [seatsData, setSeatsData] = useState([]);
 
   const businessSeats = seatsData?.find((seat) => seat.seatType === "business");
   const economySeats = seatsData?.find((seat) => seat.seatType === "economy");
-
-
   console.log("Business Seats: ", businessSeats);
   console.log("Economy Seats: ", economySeats);
-
   const businessClassSeats = businessSeats && businessSeats.seatList
     ? generateSeatsData(businessSeats?.seatList) : [];
 
   const economyClassSeats = economySeats && economySeats.seatList
     ? generateSeatsData(economySeats?.seatList) : [];
+
+  // Define the handleSearchChange function
+  const handleSearchChange = (selectedPlaneId) => {
+    setSelectedPlaneId(selectedPlaneId);
+  };
 
   useEffect(() => {
     const fetchPlanes = async () => {
@@ -77,7 +68,6 @@ const Seats = () => {
         );
 
         const { data: registerRequestData } = registerRequest;
-        console.log("RegisterRequestData", registerRequestData);
         if (registerRequestData) {
           setLoader(false);
           setPlanes(registerRequestData.response.planes);
@@ -110,7 +100,6 @@ const Seats = () => {
         if (registerRequestData) {
           setLoader(false);
           setSeatsData(registerRequestData.seats);
-          // setPlanes(registerRequestData.response.planes);
         }
       } catch ({ response }) {
         registerRequest = response;
@@ -127,6 +116,7 @@ const Seats = () => {
   }, [planes, seatsData]);
 
   return (
+    
     <Grid container spacing={2} alignItems="center">
       <Grid item xs={12}>
         <Typography variant="h4" sx={{ fontWeight: "bold" }}>
@@ -136,10 +126,21 @@ const Seats = () => {
       <Grid item xs={12} sx={{ padding: "50px" }}>
         <CardWrapper>
           <div style={{ padding: '20px' }}>
-            <SearchBar />
+            {/* Pass the planes array and the handleSearchChange function as props */}
+            <SearchBar planes={planes} onSearchChange={handleSearchChange} />
             <br />
             <br />
             <Grid container spacing={2} sx={{ border: "1px dashed #000", padding: "20px" }}>
+            {!selectedPlaneId ? (
+              <Box sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+                Select Plane to view seats
+              </Box>
+            ) : (
+              <>
               <Grid item xs={5}>
                 <Typography variant="h5" sx={{ textAlign: "center", fontWeight: "bold" }} color="text.secondary">
                   Business Class
@@ -169,6 +170,8 @@ const Seats = () => {
                   ))}
                 </Grid>
               </Grid>
+              </>
+            )}
             </Grid>
           </div>
         </CardWrapper>

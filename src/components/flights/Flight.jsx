@@ -64,32 +64,25 @@ const Flights = () => {
         <br />
         <DialogContent>
           <Grid container spacing={2}>
-            <Grid item xs={6}>
-              <Typography variant="subtitle1">Upload Image</Typography>
-              <TextField
-                fullWidth
-                variant="outlined"
-                margin="normal"
-                placeholder="Browse"
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <Typography variant="subtitle1">Number</Typography>
-              <TextField
-                fullWidth
-                variant="outlined"
-                margin="normal"
-                placeholder="Type here"
-              />
-            </Grid>
             <Grid item xs={12}>
-              <Typography variant="subtitle1">Total Seats</Typography>
-              <TextField
-                fullWidth
-                variant="outlined"
-                margin="normal"
-                placeholder="8"
-              />
+              <Typography variant="subtitle1">Flight Number</Typography>
+              <TextField fullWidth variant="outlined" margin="normal" />
+            </Grid>
+            <Grid item xs={6}>
+              <Typography variant="subtitle1">From</Typography>
+              <TextField fullWidth variant="outlined" margin="normal" />
+            </Grid>
+            <Grid item xs={6}>
+              <Typography variant="subtitle1">To</Typography>
+              <TextField fullWidth variant="outlined" margin="normal" />
+            </Grid>
+            <Grid item xs={6}>
+              <Typography variant="subtitle1">Departure Time</Typography>
+              <TextField fullWidth variant="outlined" margin="normal" />
+            </Grid>
+            <Grid item xs={6}>
+              <Typography variant="subtitle1">Arrival Time</Typography>
+              <TextField fullWidth variant="outlined" margin="normal" />
             </Grid>
           </Grid>
         </DialogContent>
