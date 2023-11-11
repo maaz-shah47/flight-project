@@ -67,10 +67,11 @@ const Sidebar = ({ isOpen }) => {
       width: '100% !important',
       backgroundColor: 'black',
       color: 'white',
-      height: '100vh',
+      height: '100%',
+      minHeight: '100vh'
     }}>
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', p: 2 }}>
-        <img src={Logo} alt="Logo" style={{ height: '50px', width: '50px' }} />
+        <img src={Logo} alt="Logo" style={{ height: '50px' }} />
       </Box>
       <Divider />
       <List sx={{
