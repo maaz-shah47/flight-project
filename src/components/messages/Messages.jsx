@@ -118,7 +118,7 @@ const Messages = () => {
         const messagesFromUser = messages.filter(
           message => message.sentBy === user.id.toString() || message.sentTo === user.id.toString()
         );
-
+  
         let lastMessage;
         if (messagesFromUser.length > 0) {
           lastMessage = messagesFromUser.reduce((prev, current) => {
@@ -134,14 +134,20 @@ const Messages = () => {
           } : null
         };
       });
-
-      console.log('Filtered users with last messages:', filteredUsersWithLastMessage);
-      setFilteredMessageListData(filteredUsersWithLastMessage);
+  
+      // Create a copy of the original filtered list
+      let filteredListCopy = [...filteredUsersWithLastMessage];
+  
       if (searchText) {
-        setFilteredMessageListData(filteredMessageListData.filter(user => user.username.toLowerCase().includes(searchText.toLowerCase())));
+        // Apply the filter on the copy based on search text
+        filteredListCopy = filteredListCopy.filter(user => user.username.toLowerCase().includes(searchText.toLowerCase()));
       }
+  
+      console.log('Filtered users with last messages:', filteredListCopy);
+      setFilteredMessageListData(filteredListCopy);
     }
   }, [users, uniqueUserIds, messages, searchText]);
+  
 
   const handleOpenMessageDialog = () => {
     setOpen(true);

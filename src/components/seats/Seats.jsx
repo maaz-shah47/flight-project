@@ -64,6 +64,15 @@ const Seats = () => {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
               ContentType: "application/json",
             },
+            params: {
+              startLatitude: 34.0522,
+              startLongitude: -118.2437,
+              endLatitude: 40.7128,
+              endLongitude: -74.0060,
+              startDate: "2023-10-15T12:00:00Z",
+              endDate: "2023-10-16T12:00:00Z",
+              totalCount: 5
+            },
           }
         );
 
@@ -135,7 +144,8 @@ const Seats = () => {
               <Box sx={{
                 display: 'flex',
                 justifyContent: 'center',
-                alignItems: 'center',
+                // alignItems: 'center',
+                height: '50vh'
               }}>
                 Select Plane to view seats
               </Box>

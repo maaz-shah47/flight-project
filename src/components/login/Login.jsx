@@ -110,10 +110,7 @@ const Login = () => {
                     display: "flex",
                   }}
                 >
-                  <Avatar
-                    src={Logo}
-                    sx={{ width: "200px", height: "200px" }}
-                  ></Avatar>
+                  <img style={{ height: '200px' }} src={Logo} alt=""/>
                 </Box>
                 <Typography
                   variant="h4"

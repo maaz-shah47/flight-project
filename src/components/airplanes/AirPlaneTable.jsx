@@ -35,19 +35,20 @@ const FlightTable = ({ planes }) => {
         <TableHead>
           <TableRow sx={{ backgroundColor: "black" }}>
             <TableCell sx={{ color: "white" }}>Image</TableCell>
-            <TableCell sx={{ color: "white" }}>Plane Name</TableCell>
             <TableCell sx={{ color: "white" }}>Number</TableCell>
             <TableCell sx={{ color: "white" }}>Total Seats</TableCell>
+            <TableCell sx={{ color: "white" }}>Registered Date</TableCell>
             <TableCell sx={{ color: "white" }}>Action</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {planes && planes.map((data, index) => (
             <TableRow key={index} sx={{ borderBottom: "none" }}>
-              <TableCell><img src={AiroplaneIcon} alt="Seat Icon" style={{ height: '50px' }} /></TableCell>
-              <TableCell>{data.planename}</TableCell>
+              {console.log(data)}
+              <TableCell><img src={data.imageLink} alt="Seat Icon" style={{ height: '50px' }} /></TableCell>
               <TableCell>{data.codename}</TableCell>
               <TableCell>{data.planecapacity}</TableCell>
+              <TableCell>data not in backend</TableCell>
               <TableCell>
                 <IconButton
                   style={{
