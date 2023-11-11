@@ -8,6 +8,8 @@ import UserIcon from '../../assets/user.png';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 const Navbar = ({ handleMenuClick, isOpen }) => {
+  const user = JSON.parse(localStorage.getItem('user'));
+
   return (
     <Box
       style={{
@@ -55,9 +57,11 @@ const Navbar = ({ handleMenuClick, isOpen }) => {
             </Box>
             <Box sx={{ marginRight: '15px', display: 'flex', flexDirection: 'column', color: 'white' }}>
               <Typography variant="body" sx={{ fontWeight: 'bold' }}>
-                Jack Jill
+                {user && user.username}
               </Typography>
-              <Typography variant="body2">jackjill@example.com</Typography>
+              <Typography variant="body2">
+                {user && user.email}
+              </Typography>
             </Box>
             <Box>
               <IconButton sx={{ color: 'white' }}>

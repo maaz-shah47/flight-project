@@ -7,6 +7,8 @@ const styles = {
     maxWidth: '100%',
     padding: '15px',
     backgroundColor: 'white',
+    maxHeight: '80vh', // Set a maximum height to the viewport height
+    overflowY: 'auto', // Enable vertical scrolling when content exceeds the maximum height
   }
 }
 

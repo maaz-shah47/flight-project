@@ -1,5 +1,3 @@
-// FlightTable.jsx
-
 import {
   Table,
   TableBody,
@@ -12,35 +10,51 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
+import AiroplaneIcon from '../../assets/aeroplane.png';
 
-const FlightTable = ({ flights }) => {
+const dummyData = [
+  {
+    flightNo: "AA123",
+    number: "Pilatus PC-12",
+    seats: "8",
+    registered_date: "22 oct 2023",
+  },
+  {
+    flightNo: "BA456",
+    number: "Pilatus PC-12",
+    seats: "10",
+    registered_date: "23 oct 2023",
+  },
+  // Add more dummy data as needed
+];
+
+const FlightTable = ({ planes }) => {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ border: "none" }}>
         <TableHead>
           <TableRow sx={{ backgroundColor: "black" }}>
-            <TableCell sx={{ color: "white" }}>Flight No</TableCell>
-            <TableCell sx={{ color: "white" }}>From</TableCell>
-            <TableCell sx={{ color: "white" }}>To</TableCell>
-            <TableCell sx={{ color: "white" }}>Departure</TableCell>
-            <TableCell sx={{ color: "white" }}>Arrival</TableCell>
+            <TableCell sx={{ color: "white" }}>Image</TableCell>
+            <TableCell sx={{ color: "white" }}>Number</TableCell>
+            <TableCell sx={{ color: "white" }}>Total Seats</TableCell>
+            <TableCell sx={{ color: "white" }}>Registered Date</TableCell>
             <TableCell sx={{ color: "white" }}>Action</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {flights.map((flight, index) => (
+          {planes && planes.map((data, index) => (
             <TableRow key={index} sx={{ borderBottom: "none" }}>
-              <TableCell>{flight.planeCode}</TableCell>
-              <TableCell>{flight.startLat}</TableCell>
-              <TableCell>{flight.endLat}</TableCell>
-              <TableCell>{flight.departureTime}</TableCell>
-              <TableCell>{flight.arrivalTime}</TableCell>
+              {console.log(data)}
+              <TableCell><img src={data.imageLink} alt="Seat Icon" style={{ height: '50px' }} /></TableCell>
+              <TableCell>{data.codename}</TableCell>
+              <TableCell>{data.planecapacity}</TableCell>
+              <TableCell>data not in backend</TableCell>
               <TableCell>
                 <IconButton
                   style={{
-                    backgroundColor: "#f5f5f5",
+                    backgroundColor: '#f5f5f5',
                     marginLeft: "5px",
-                    boxShadow: "1px 1px 1px 1px rgba(0,0,0,0.1)",
+                    boxShadow: '1px 1px 1px 1px rgba(0,0,0,0.1)'
                   }}
                 >
                   <EditIcon sx={{ cursor: "pointer", color: "black" }} />
@@ -49,8 +63,8 @@ const FlightTable = ({ flights }) => {
                 <IconButton
                   style={{
                     marginLeft: "5px",
-                    backgroundColor: "#f5f5f5",
-                    boxShadow: "1px 1px 1px 1px rgba(0,0,0,0.1)",
+                    backgroundColor: '#f5f5f5',
+                    boxShadow: '1px 1px 1px 1px rgba(0,0,0,0.1)'
                   }}
                 >
                   <DeleteIcon sx={{ cursor: "pointer", color: "black" }} />

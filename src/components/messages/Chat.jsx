@@ -3,58 +3,7 @@ import { Box } from '@mui/material';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPhone, faEnvelope, faPlus, faFaceSmile, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
-
-const messages = [
-  {
-    id: 1,
-    name: 'John Doe',
-    profile: 'https://static.vecteezy.com/system/resources/previews/002/275/847/original/male-avatar-profile-icon-of-smiling-caucasian-man-vector.jpg',
-    message: 'Hello, how are you?',
-    time: '12:00 PM',
-  },
-  {
-    id: 2,
-    name: 'Jane Doe',
-    profile: 'https://static.vecteezy.com/system/resources/previews/002/275/847/original/male-avatar-profile-icon-of-smiling-caucasian-man-vector.jpg',
-    message: 'I am doing great. Thanks for asking!',
-    time: '12:05 PM',
-  },
-  {
-    id: 3,
-    name: 'John Doe',
-    profile: 'https://static.vecteezy.com/system/resources/previews/002/275/847/original/male-avatar-profile-icon-of-smiling-caucasian-man-vector.jpg',
-    message: 'Hello, how are you?',
-    time: '12:00 PM',
-  },
-  {
-    id: 4,
-    name: 'Jane Doe',
-    profile: 'https://static.vecteezy.com/system/resources/previews/002/275/847/original/male-avatar-profile-icon-of-smiling-caucasian-man-vector.jpg',
-    message: 'I am doing great. Thanks for asking!',
-    time: '12:05 PM',
-  },
-  {
-    id: 5,
-    name: 'Jane Doe',
-    profile: 'https://static.vecteezy.com/system/resources/previews/002/275/847/original/male-avatar-profile-icon-of-smiling-caucasian-man-vector.jpg',
-    message: 'I am doing great. Thanks for asking!',
-    time: '12:05 PM',
-  },
-  {
-    id: 6,
-    name: 'Jane Doe',
-    profile: 'https://static.vecteezy.com/system/resources/previews/002/275/847/original/male-avatar-profile-icon-of-smiling-caucasian-man-vector.jpg',
-    message: 'I am doing great. Thanks for asking!',
-    time: '12:05 PM',
-  },
-  {
-    id: 3,
-    name: 'John Doe',
-    profile: 'https://static.vecteezy.com/system/resources/previews/002/275/847/original/male-avatar-profile-icon-of-smiling-caucasian-man-vector.jpg',
-    message: 'Hello, how are you?',
-    time: '12:00 PM',
-  },
-];
+import { useState } from 'react';
 
 const MessageContainer = styled(Box)`
   display: flex;
@@ -87,8 +36,7 @@ const Footer = styled(Box)`
   border: 1px solid #e0e0e0;
 `;
 
-
-const Chat = () => {
+const Chat = ({ messages, socket, userId }) => {
   const message = {
     id: 1,
     name: 'John Doe',
@@ -96,6 +44,31 @@ const Chat = () => {
     message: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.',
     time: '12:00 PM',
   }
+  const [messageText, setMessageText] = useState('');
+  const user = JSON.parse(localStorage.getItem('user'));
+
+  const sendMessage = () => {
+    const message = {
+      action: 'send',
+      data: {
+        messageText: messageText,
+        sentBy: 'admin',
+        sentTo: userId.toString(),
+        readBy: [],
+        users: ['admin', userId.toString()]
+      }
+    };
+
+    socket.send(JSON.stringify(message));
+    setMessageText('');
+  };
+
+  const formatDateString = (dateString) => {
+    const options = { hour: '2-digit', minute: '2-digit' };
+    const formattedTime = new Date(dateString).toLocaleTimeString('en-US', options);
+    return formattedTime;
+  };
+
 
   return (
     <MessageContainer>
@@ -142,37 +115,39 @@ const Chat = () => {
       </HeaderContainer>
       <Divider />
       <MessageSection>
-        {messages.map((message) => (
-          <Box
-            key={message.id}
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: message.name === 'John Doe' ? 'flex-start' : 'flex-end',
-              marginBottom: '20px',
-            }}
-          >
-            <Box sx={{
-              display: 'flex', alignItems: 'center', gap: '10px',
-              flexDirection: message.name === 'John Doe' ? 'row' : 'row-reverse'
-            }}>
-              <img src={message.profile} alt="" height="40px" width="40px" style={{ borderRadius: '50%' }} />
+        {messages.map((message, index) => (
+          <>
+            <Box
+              key={index}
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: (user.userType == 'admin' && message.sentBy == 'admin') || message.sentBy == user.id ? 'flex-end' : 'flex-start',
+                marginBottom: '20px',
+              }}
+            >
               <Box sx={{
-                backgroundColor: message.name === 'John Doe' ? '#f5f5f5' : 'black',
-                color: message.name === 'John Doe' ? 'black' : 'white',
-                padding: '10px',
-                borderRadius: '50px',
+                display: 'flex', alignItems: 'center', gap: '10px',
+                flexDirection: (user.userType == 'admin' && message.sentBy == 'admin') || message.sentBy == user.id ? 'row-reverse' : 'row'
               }}>
+                <img src="https://cdn.iconscout.com/icon/free/png-256/free-avatar-370-456322.png" alt="" height="40px" width="40px" style={{ borderRadius: '50%' }} />
+                <Box sx={{
+                  backgroundColor: (user.userType == 'admin' && message.sentBy == 'admin') || message.sentBy == user.id ? '#f5f5f5' : 'black',
+                  color: (user.userType == 'admin' && message.sentBy == 'admin') || message.sentBy == user.id ? 'black' : 'white',
+                  padding: '10px',
+                  borderRadius: '50px',
+                }}>
+                  <span style={{
+                    fontSize: '14px',
+                  }}>{message.messageText}</span>
+                </Box>
                 <span style={{
-                  fontSize: '14px',
-                }}>{message.message}</span>
+                  fontSize: '12px',
+                  color: '#9e9e9e'
+                }}>{formatDateString(message.createdAt)}</span>
               </Box>
-              <span style={{
-                fontSize: '12px',
-                color: '#9e9e9e'
-              }}>{message.time}</span>
             </Box>
-          </Box>
+          </>
         ))}
       </MessageSection>
 
@@ -191,6 +166,8 @@ const Chat = () => {
           style={{
             flex: '1 1 auto',
           }}
+          value={messageText}
+          onChange={(e) => setMessageText(e.target.value)}
           placeholder="Type a message"
           InputProps={{ disableUnderline: true }}
         />
@@ -210,7 +187,9 @@ const Chat = () => {
             backgroundColor: '#f5f5f5',
             padding: '9px',
             gap: '6px',
-          }}>
+          }}
+            onClick={sendMessage}
+          >
             <span>
               Send
             </span>

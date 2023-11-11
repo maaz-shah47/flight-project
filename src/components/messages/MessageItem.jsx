@@ -1,15 +1,19 @@
 import { Box, Chip, Typography } from "@mui/material";
 
-const MessageItem = ({ item }) => {
+const MessageItem = ({ item, handleShowMessages }) => {
   const {
     id,
-    name,
-    profile,
-    message,
-    time
+    username,
+    lastMessage,
   } = item;
 
-  const truncatedMessage = message.length > 17 ? `${message.slice(0, 17)}...` : message;
+  const truncatedMessage = lastMessage.messageText.length > 17 ? `${lastMessage.messageText.slice(0, 17)}...` : lastMessage.messageText;
+  const formatDateTimeString = (dateString) => {
+    const date = new Date(dateString);
+    const formattedDate = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+    const formattedTime = date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    return `${formattedDate} ${formattedTime}`;
+  };
   return (
     <Box sx={{
       display: 'flex',
@@ -19,9 +23,9 @@ const MessageItem = ({ item }) => {
       alignItems: 'center',
       padding: '10px 0 10px 0',
       borderBottom: '1px solid #e0e0e0',
-    }}>
+    }} onClick={() => handleShowMessages(id)}>
       <Box>
-        <img src={profile} alt="user" height="40px" width="40px" style={{ borderRadius: '50%' }} />
+        <img src="https://cdn.iconscout.com/icon/free/png-256/free-avatar-370-456322.png" alt="user" height="40px" width="40px" style={{ borderRadius: '50%' }} />
       </Box>
       <Box sx={{
         flex: 2,
@@ -32,7 +36,7 @@ const MessageItem = ({ item }) => {
           <Typography sx={{
             fontSize: '14px',
             fontWeight: 'bold',
-          }}>{name}</Typography>
+          }}>{username}</Typography>
         </Box>
         <Box>
           <Typography sx={{
@@ -60,8 +64,8 @@ const MessageItem = ({ item }) => {
         </Box>
         <Box>
           <Typography sx={{
-            fontSize: '10px'
-          }}>{time}</Typography>
+            fontSize: '12px'
+          }}>{formatDateTimeString(lastMessage.createdAt)}</Typography>
         </Box>
       </Box>
     </Box>
